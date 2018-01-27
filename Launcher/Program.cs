@@ -98,7 +98,7 @@ namespace QuantConnect.Lean.Launcher
                 {
                     UseShellExecute = false,
                     FileName  = Config.Get("desktop-exe"),
-                    Arguments = Config.Get("desktop-http-port")
+                    Arguments = Config.Get("desktop-http-port")  + " " + Config.Get("desktop-mode")
                 };
                 Process.Start(info);
             }

@@ -31,7 +31,7 @@ namespace QuantConnect.Algorithm.CSharp
     public class QuandlImporterAlgorithm : QCAlgorithm
     {
         private SimpleMovingAverage _sma;
-        string _quandlCode = "YAHOO/INDEX_SPY";
+        string _quandlCode = "WIKI/AAPL";
 
         /// Initialize the data and resolution you require for your strategy:
         public override void Initialize()
@@ -61,7 +61,8 @@ namespace QuantConnect.Algorithm.CSharp
                 Debug("Purchased " + _quandlCode + " >> " + Time.ToShortDateString());
             }
 
-            Plot("SPY", _sma);
+            Plot("AAPL", "AAPL SMA", _sma);
+            Plot("AAPL", "AAPL Close", data.Price);
         }
     }
 }

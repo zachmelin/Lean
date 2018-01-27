@@ -10,23 +10,35 @@ namespace QuantConnect.Views
         [STAThread]
         static void Main(string[] args)
         {
-            if (args.Length != 1)
+            if (args.Length < 1)
             {
-                throw new Exception(
+                throw new ArgumentException(
                     "Error: You must specify the port on which the application will open a TCP socket.");
             }
 
-            var port = args[0];
+            bool useOfflineView = args.Length == 2 && "offline".Equals(args[1], StringComparison.OrdinalIgnoreCase);
 
-            var form = new LeanWinForm();
+            var port = args[0];
 
             var desktopClient = new DesktopClient();
 
-            var thread = new Thread(() => desktopClient.Run(port, form));
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
+            if(useOfflineView) {
+                var form = new LeanOfflineWinForm();
+                var thread = new Thread(() => desktopClient.Run(port, form));
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
 
-            Application.Run(form);
+                Application.Run(form);
+            } 
+            else
+            {
+                var form = new LeanWinForm();
+                var thread = new Thread(() => desktopClient.Run(port, form));
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
+
+                Application.Run(form);
+            }
 
             // The above code is blocking.
             // Once it finishes, close the NetMQ client
